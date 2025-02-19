@@ -12,12 +12,12 @@ public class transaction {
     private String firma; // firma ;
 
 
-    public transaction(String txid, String CPemisor, String CPreceptor, double amount, String firma) {
-        this.txid = txid;
+    public transaction(String txid, String CPemisor, String CPreceptor, double amount, String firma, PrivateKey PrivateKey) {
+        this.txid = generateTXID(CPemisor, CPreceptor, amount);
         this.CPemisor = CPemisor;
         this.CPreceptor = CPreceptor;
         this.amount = amount;
-        this.firma = firma;
+        this.firma = signTransaction(PrivateKey);
     }
 
     /**
@@ -26,7 +26,7 @@ public class transaction {
      * transacción. usando SHA-256
      */
 
-    private String generateTXID(){
+    public static String generateTXID(String CPemisor, String CPreceptor, double amount ) {
         String data = CPemisor + "," + CPreceptor + "," + amount + System.currentTimeMillis();
         return cryp.sha256(data);
     }
