@@ -1,6 +1,7 @@
 package org.juliet;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
 
@@ -10,22 +11,34 @@ public class Main {
 
     public static void main(String[] args) {
 
-        String[] genesisTransactions = {" conent envio block "};
-        block genesisBlock =  new block( genesisTransactions, 0 );
+       blockchain blockchain = new blockchain();
 
-        String[] block2Transactions = {" content envio block2 "};
-        block block2 = new block(block2Transactions, genesisBlock.getHash());
+       claves senderclave = new claves();
+       claves receiverclave = new claves();
 
-        String[] block3Transactions = {" content envio block3 "};
-        block block3 = new block(block3Transactions, genesisBlock.getHash());
+        // Crear transacciones
 
-        //imprime los hashe
+        String txID1 = transaction.generateTXID(senderclave.getPublicKeyAsString(), receiverclave.getPublicKeyAsString(), 50);
 
-        System.out.println(" hash del genesis block ");
-        System.out.println(genesisBlock.getHash());
-        System.out.println(" hash del block2 ");
-        System.out.println(block2.getHash());
-        System.out.println(" hash del block3 ");
-        System.out.println(block3.getHash());
+        List<transaction> transactions1 = new ArrayList<>();
+        transactions1.add(new transaction(txID1, senderclave.getPublicKeyAsString(), receiverclave.getPublicKeyAsString(), 50, "", senderclave.getPrivateKey()));
+
+        List<transaction> transactions2 = new ArrayList<>();
+        transactions2.add(new transaction(txID1, senderclave.getPublicKeyAsString(), receiverclave.getPublicKeyAsString(), 50, "", senderclave.getPrivateKey()));
+
+        //crear bloques
+        block block1 = new block(transactions1,blockchain.ultimoBloque().getHash());
+        blockchain.addblock(block1);
+
+        block block2 = new block(transactions2,blockchain.ultimoBloque().getHash());
+        blockchain.addblock(block2);
+
+        //imprimir bloques
+        for (block b : blockchain.getListaBloques()){
+            System.out.println("hash del bloque" + b.getHash());
+            System.out.println( " anterior hash" + b.getPreviusHash());
+            System.out.println( " transaccion" + b.getTransactions());
+        }
+        System.out.println("validacion de blockchain " + blockchain.ultimoBloque().getHash());
     }
 }
