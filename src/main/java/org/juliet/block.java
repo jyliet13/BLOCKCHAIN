@@ -1,21 +1,20 @@
 package org.juliet;
 
-import java.util.Arrays;
-import java.util.Date;
+import java.util.List;
 
 /*
 block in blockchain
  */
 public class block {
 
-    private int previusHash;
-    private String[] transactions;
-    private int hash;
+    private String previusHash;
+    private List<transaction> transactions;
+    private String hash;
 
-    public block(String[] transactions, int previusHash) {
+    public block(List<transaction> transactions, String previusHash) {
         this.transactions = transactions;
         this.previusHash = previusHash;
-        this.hash = Arrays.hashCode(transactions);
+        this.hash = generateHash();
 
 
        // Object[] contens = {Arrays.hashCode(transactions), previusHash};
@@ -25,32 +24,32 @@ public class block {
 
 
     private String generateHash() {
-        String data = previusHash + Arrays.toString(transactions);
+        String data = previusHash + transactions.toString();
         return cryp.sha256(data);
     }
 
 
-    public int getPreviusHash() {
+    public String getPreviusHash() {
         return previusHash;
     }
 
-    public void setPreviusHash(int previusHash) {
+    public void setPreviusHash(String previusHash) {
         this.previusHash = previusHash;
     }
 
-    public String[] getTransactions() {
+    public List<transaction> getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(String[] transactions) {
+    public void setTransactions(List<transaction> transactions) {
         this.transactions = transactions;
     }
 
-    public int getHash() {
+    public String getHash() {
         return hash;
     }
 
-    public void setHash(int hash) {
+    public void setHash(String hash) {
         this.hash = hash;
     }
 }
